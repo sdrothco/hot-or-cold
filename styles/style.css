@@ -38,6 +38,12 @@ body {
 	-webkit-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
 	-moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
 	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+    
+}
+
+.success {
+	background: url(../images/Animated_fire_by_nevit.gif) no-repeat fixed top center #fff;
+	background-size: cover;
 }
 
 a {
@@ -318,4 +324,24 @@ ul.guessBox li {
 	width: 95%;
 	margin: 0.2em;
 	color: #fff;
+}
+
+.very-hot {
+	background-color: #cc324b;
+}
+.hot {
+	background-color: orange;
+}
+.lukewarm {
+	background-color: yellow;
+}
+.cold {
+	background-color: cyan;
+}
+.very-cold {
+	background-color: #1a4e95;
+}
+
+#newGameButton {
+	display: none;
 }
