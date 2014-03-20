@@ -71,7 +71,7 @@ $(document).ready(function(){
 	// generate a new secret number, and clear any existing data.
 	function newGame() {
 		secretNum = generateSecretNumber(SECRET_NUM_MIN, SECRET_NUM_MAX);
-		console.log("Secret number: " + secretNum);
+		//console.log("Secret number: " + secretNum);
 		
 		$('#userGuess').css("visibility", "visible");
 
@@ -80,7 +80,7 @@ $(document).ready(function(){
 		
 		$('#guessList').find('li').remove();
 
-		previousGuess = 0;
+		previousGuessDiff = 0;
 
 		provideFeedback("Make your Guess!", "none");
 		$('#guessButton').show();
@@ -92,28 +92,35 @@ $(document).ready(function(){
 
 	// Check that the number they entered is a valid number in the specified range.
 	function validateInput(guessNum) {
-		var errorStr = "Enter a number between " + SECRET_NUM_MIN +
-				" and " + SECRET_NUM_MAX;
-
-		console.log("Validating guess number: " + guessNum);
+		var errorStr = "";
+		var errorStrEnd = "  Please enter a number between " + SECRET_NUM_MIN +
+				" and " + SECRET_NUM_MAX + ".";
 
 		if (guessNum === null || typeof guessNum === "undefined" || guessNum.trim() === "") {
-
-			provideFeedback(errorStr);
-			console.log(errorStr);
+			errorStr = "Error: You didn't enter anything.";
 		}
 		else {
 			guessNum = +guessNum;	// convert the input string to a number
-			if (isNaN(guessNum) || guessNum % 1 !== 0 ||
-				guessNum < SECRET_NUM_MIN || guessNum > SECRET_NUM_MAX) {
-
-				provideFeedback(errorStr);
-				console.log(errorStr);
+			if (isNaN(guessNum)) {
+				errorStr = "Error: That isn't a valid number.";
+			}
+			else if (guessNum % 1 !== 0) {
+				errorStr = "Error: You can't use decimal numbers.";
+			}
+			else if (guessNum < SECRET_NUM_MIN) {
+				errorStr = "Error: That number was too small.";
+			}
+			else if (guessNum > SECRET_NUM_MAX) {
+				errorStr = "Error: That number was too big.";
 			}
 			else {
 				// It was a good number!
 				return true;
 			}
+			errorStr += errorStrEnd;
+			provideFeedback(errorStr);
+			console.log(errorStr);
+
 		}
 		// It was an invalid number, so don't try to process it.
 		return false;
@@ -126,7 +133,9 @@ $(document).ready(function(){
 	
 		// compare to secret number
 		var guessDifference = Math.abs(secretNum - guessNum);
-		console.log("Guess diff = " + guessDifference);
+		//console.log("Guess diff = " + guessDifference);
+
+		var feedbackColor = "none";
 
 		// Provide feedback:
 		// If this is the first guess, then give absolute feedback (as in hot or cold).
@@ -134,7 +143,8 @@ $(document).ready(function(){
 		// If this is not the first guess, compare the new guess to the old guess and
 		// tell them if they are getting warmer or colder. 
 		if ( guessDifference === 0) {
-			provideFeedback("You guessed it!", "very-hot");
+			feedbackColor = "very-hot";
+			provideFeedback("You guessed it!", feedbackColor);
 			$('#guessButton').hide();
 			$('#newGameButton').show();
 			$('#userGuess').css("visibility", "hidden");
@@ -142,66 +152,67 @@ $(document).ready(function(){
 
 		}
 		else if ( guessDifference >= 1 && guessDifference <= 10 ) {
-
+			feedbackColor = "very-hot";
 			if ( previousGuessDiff !== 0 ) {
 				if ( guessDifference <= previousGuessDiff ) {
-					provideFeedback("Getting hotter!", "very-hot");
+					provideFeedback("Getting hotter!", feedbackColor);
 				}
-				else provideFeedback("Getting less hot", "very-hot");
+				else provideFeedback("Getting less hot", feedbackColor);
 			}
-			else provideFeedback("Very hot!", "very-hot");
+			else provideFeedback("Very hot!", feedbackColor);
 		}
 		else if ( guessDifference >= 11 && guessDifference <= 20 ) {
-
+			feedbackColor = "hot";
 			if ( previousGuessDiff !== 0 ) {
 				if ( guessDifference <= previousGuessDiff ) {
-					provideFeedback("Getting warmer", "hot");
+					provideFeedback("Getting warmer", feedbackColor);
 				}
-				else provideFeedback("Getting less warm", "hot");
+				else provideFeedback("Getting less warm", feedbackColor);
 			}
-			else provideFeedback("Hot", "hot");
+			else provideFeedback("Hot", feedbackColor);
 		}
 		else if ( guessDifference >= 21 && guessDifference <= 30 ) {
-
+			feedbackColor = "lukewarm";
 			if ( previousGuessDiff !== 0 ) {
 				if ( guessDifference <= previousGuessDiff ) {
-					provideFeedback("Getting warmer", "lukewarm");
+					provideFeedback("Getting warmer", feedbackColor);
 				}
-				else provideFeedback("Getting colder", "lukewarm");
+				else provideFeedback("Getting colder", feedbackColor);
 			}
-			else provideFeedback("Lukewarm", "lukewarm");
+			else provideFeedback("Lukewarm", feedbackColor);
 		}
 		else if ( guessDifference >= 31 && guessDifference <= 50 ) {
-
+			feedbackColor = "cold";
 			if ( previousGuessDiff !== 0 ) {
 				if ( guessDifference <= previousGuessDiff ) {
-					provideFeedback("Getting a little warmer", "cold");
+					provideFeedback("Getting a little warmer", feedbackColor);
 				}
-				else provideFeedback("Getting colder", "cold");
+				else provideFeedback("Getting colder", feedbackColor);
 			}
-			else provideFeedback("Cold", "cold");
+			else provideFeedback("Cold", feedbackColor);
 		}
 		else if ( guessDifference >= 51 && guessDifference <= 100 ) {
-
+			feedbackColor = "very-cold";
 			if ( previousGuessDiff !== 0 ) {
 				if ( guessDifference <= previousGuessDiff ) {
-					provideFeedback("Getting a little warmer", "very-cold");
+					provideFeedback("Getting a little warmer", feedbackColor);
 				}
-				else provideFeedback("Getting even colder!", "very-cold");
+				else provideFeedback("Getting even colder!", feedbackColor);
 			}
-			else provideFeedback("Very Cold!", "very-cold");
+			else provideFeedback("Very Cold!", feedbackColor);
 		}
 
 		previousGuessDiff = guessDifference;
-		logGuess(guessNum);
+		logGuess(guessNum, feedbackColor);
 	}
 
 	// Keep track of the old guesses, and output them for the user.
-	function logGuess(guessNum) {
+	function logGuess(guessNum, feedbackColor) {
 		numGuesses++;
 		$('#count').text(numGuesses);
 
 		var newGuess = $("<li>" + guessNum + "</li>");
+		newGuess.addClass(feedbackColor);
 		$('#guessList').append(newGuess);
 	}
 
