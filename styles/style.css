@@ -183,7 +183,7 @@ h1 {
 	border-radius: 4px;
 	margin: 0 auto;
 
-	box-shadow: rgb(26, 31, 52) 1px 1px,
+	/*box-shadow: rgb(26, 31, 52) 1px 1px,
     rgb(26, 31, 52) 2px 2px,
     rgb(26, 31, 52) 3px 3px,
     rgb(26, 31, 53) 4px 4px,
@@ -210,7 +210,7 @@ h1 {
     rgb(30, 36, 60) 25px 25px,
     rgb(30, 36, 60) 26px 26px,
     rgb(30, 36, 60) 27px 27px,
-    rgb(31, 37, 61) 28px 28px;
+    rgb(31, 37, 61) 28px 28px;*/
 
 }
 
@@ -305,7 +305,8 @@ input:focus {
 ul.guessBox {
 	height: 80px;
 	margin: 10px auto 0;
-	background: #11a8ab;
+	/*background: #11a8ab;*/
+	background: #109FBF;
 	padding: 0.5em;
 	display: block;
 	line-height: 2em;
@@ -316,7 +317,7 @@ ul.guessBox {
 }
 ul.guessBox li {
 	display: inline;
-	background-color: #1a4e95;
+	background-color: #02386A;
 	padding: 0.3em;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -327,19 +328,19 @@ ul.guessBox li {
 }
 
 .very-hot {
-	background-color: #cc324b;
+	background-color: #B40404;
 }
 .hot {
-	background-color: orange;
+	background-color: #DF3A01;
 }
 .lukewarm {
-	background-color: yellow;
+	background-color: #109FBF;
 }
 .cold {
-	background-color: cyan;
+	background-color: #045FB4;
 }
 .very-cold {
-	background-color: #1a4e95;
+	background-color: #02386A;
 }
 
 #newGameButton {

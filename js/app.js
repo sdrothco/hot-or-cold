@@ -27,13 +27,13 @@ $(document).ready(function(){
 
 	// They clicked the guess button, so process their guess.
 	$('#guessButton').click(function() {
-		//console.log("Guess via button. Guess = >" + $('#userGuess').val() + "<");
-		$('#userGuess').focus();
+		
+		var $userGuessBox = $('#userGuess');
+		$userGuessBox.focus();
 
-		if(validateInput($('#userGuess').val())) {
-			evaluateGuess($('#userGuess').val());
+		if(validateInput($userGuessBox.val())) {
+			evaluateGuess($userGuessBox.val());
 		}
-		//else console.log("Input was invalid.");
 
 		resetGuessBox();
 		event.preventDefault();
@@ -42,12 +42,10 @@ $(document).ready(function(){
 	// They made a guess by hitting the enter key in the input box, so process their guess.
 	$('#userGuess').on('keypress', function(event) {
         if (event.keyCode === 13) {
-			//console.log("Guess via enter key. Guess = >" + $(this).val() + "<");
 
 			if(validateInput($(this).val())) {
 				evaluateGuess($(this).val());
 			}
-			//else console.log("Input was invalid.");
 
 			resetGuessBox();
 			event.preventDefault();
@@ -55,8 +53,13 @@ $(document).ready(function(){
     });
 
 	// Set the feedback box to the passed-in string
-	function provideFeedback(feedbackStr) {
-		$('#feedback').text(feedbackStr);
+	function provideFeedback(feedbackStr, feedbackColorClass) {
+		var $feedback = $('#feedback');
+		$feedback.text(feedbackStr);
+		$feedback.removeClass('very-hot hot lukewarm cold very-cold');
+		if (feedbackColorClass !== "none") {
+			$feedback.addClass(feedbackColorClass);
+		}
 	}
 
 	// Clear the guess input box
@@ -79,10 +82,11 @@ $(document).ready(function(){
 
 		previousGuess = 0;
 
-		provideFeedback("Make your Guess!");
+		provideFeedback("Make your Guess!", "none");
 		$('#guessButton').show();
 		$('#newGameButton').hide();
 		$('body').removeClass('success');
+
 
 	}
 
@@ -130,7 +134,7 @@ $(document).ready(function(){
 		// If this is not the first guess, compare the new guess to the old guess and
 		// tell them if they are getting warmer or colder. 
 		if ( guessDifference === 0) {
-			provideFeedback("You guessed it!");
+			provideFeedback("You guessed it!", "very-hot");
 			$('#guessButton').hide();
 			$('#newGameButton').show();
 			$('#userGuess').css("visibility", "hidden");
@@ -141,51 +145,51 @@ $(document).ready(function(){
 
 			if ( previousGuessDiff !== 0 ) {
 				if ( guessDifference <= previousGuessDiff ) {
-					provideFeedback("Getting hotter!");
+					provideFeedback("Getting hotter!", "very-hot");
 				}
-				else provideFeedback("Getting less hot");
+				else provideFeedback("Getting less hot", "very-hot");
 			}
-			else provideFeedback("Very hot!");
+			else provideFeedback("Very hot!", "very-hot");
 		}
 		else if ( guessDifference >= 11 && guessDifference <= 20 ) {
 
 			if ( previousGuessDiff !== 0 ) {
 				if ( guessDifference <= previousGuessDiff ) {
-					provideFeedback("Getting warmer");
+					provideFeedback("Getting warmer", "hot");
 				}
-				else provideFeedback("Getting less warm");
+				else provideFeedback("Getting less warm", "hot");
 			}
-			else provideFeedback("Hot");
+			else provideFeedback("Hot", "hot");
 		}
 		else if ( guessDifference >= 21 && guessDifference <= 30 ) {
 
 			if ( previousGuessDiff !== 0 ) {
 				if ( guessDifference <= previousGuessDiff ) {
-					provideFeedback("Getting warmer");
+					provideFeedback("Getting warmer", "lukewarm");
 				}
-				else provideFeedback("Getting colder");
+				else provideFeedback("Getting colder", "lukewarm");
 			}
-			else provideFeedback("Lukewarm");
+			else provideFeedback("Lukewarm", "lukewarm");
 		}
 		else if ( guessDifference >= 31 && guessDifference <= 50 ) {
 
 			if ( previousGuessDiff !== 0 ) {
 				if ( guessDifference <= previousGuessDiff ) {
-					provideFeedback("Getting a little warmer");
+					provideFeedback("Getting a little warmer", "cold");
 				}
-				else provideFeedback("Getting colder");
+				else provideFeedback("Getting colder", "cold");
 			}
-			else provideFeedback("Cold");
+			else provideFeedback("Cold", "cold");
 		}
 		else if ( guessDifference >= 51 && guessDifference <= 100 ) {
 
 			if ( previousGuessDiff !== 0 ) {
 				if ( guessDifference <= previousGuessDiff ) {
-					provideFeedback("Getting a little warmer");
+					provideFeedback("Getting a little warmer", "very-cold");
 				}
-				else provideFeedback("Getting even colder!");
+				else provideFeedback("Getting even colder!", "very-cold");
 			}
-			else provideFeedback("Very Cold!");
+			else provideFeedback("Very Cold!", "very-cold");
 		}
 
 		previousGuessDiff = guessDifference;
